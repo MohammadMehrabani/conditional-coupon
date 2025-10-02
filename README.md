@@ -193,8 +193,6 @@ Calculation:
 - 20% of $200 = $40
 - Since $40 (percentage) > $30 (amount), the final discount will be **$30**.
 
----
-
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
