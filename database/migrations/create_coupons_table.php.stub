@@ -1,0 +1,76 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use MohammadMehrabani\ConditionalCoupon\Enums\{CurrencyEnum, CouponStatusEnum};
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('coupons', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('title');
+            $table->string('code');
+
+            $table->float('discount_percentage')->unsigned()->nullable();
+            $table->double('discount_amount')->unsigned()->nullable();
+            $table->string('currency')->default(CurrencyEnum::IRR->value);
+
+            $table->unsignedInteger('total_count');
+            $table->unsignedInteger('used_count')->default(0);
+
+            $table->timestamp('start_at');
+            $table->timestamp('end_at');
+            $table->string('provider')->nullable();
+            $table->unsignedTinyInteger('status')->default(CouponStatusEnum::ACTIVE->value);
+            $table->text('description')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->unique(['code', 'status'], 'coupons_code_unique');
+
+            $table->index([
+                'code',
+                'status',
+                'start_at',
+                'end_at',
+            ]);
+        });
+
+        // constraint to make sure one of discount_percentage or discount_amount is filled
+        $constraintName = 'coupons_discount_percentage_discount_amount_filled_constraint';
+        DB::statement(
+            "ALTER TABLE coupons
+                ADD CONSTRAINT {$constraintName} CHECK (
+                    ((discount_percentage IS NULL) <> (discount_amount IS NULL)) or
+                    ((discount_percentage IS NOT NULL) and (discount_amount IS NOT NULL))
+            );"
+        );
+
+        Schema::create('coupon_conditions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('coupon_id')->constrained('coupons');
+            $table->string('condition');
+            $table->jsonb('data');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('coupon_conditions');
+        Schema::dropIfExists('coupons');
+    }
+};
