@@ -1,0 +1,56 @@
+{
+    "name": "mohammadmehrabani/conditional-coupon",
+    "description": "The conditional coupon for the Laravel.",
+    "keywords": [
+        "mohammadmehrabani",
+        "laravel",
+        "conditional-coupon",
+        "coupon",
+        "discount",
+        "promo",
+        "coupon code",
+        "discount code",
+        "promo code",
+        "conditional coupon code",
+        "conditional discount code",
+        "conditional-discount",
+        "conditional promo code",
+        "conditional-promo"
+    ],
+    "homepage": "https://github.com/mohammadmehrabani/conditional-coupon",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohammad Hossein Saed Mehrabani",
+            "email": "mehrabani.dev@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^9.0||^10.0||^11.0||^12.0",
+        "illuminate/filesystem": "^9.0||^10.0||^11.0||^12.0",
+        "illuminate/contracts": "^9.0||^10.0||^11.0||^12.0",
+        "illuminate/database": "^9.0||^10.0||^11.0||^12.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.24"
+    },
+    "autoload": {
+        "psr-4": {
+            "MohammadMehrabani\\ConditionalCoupon\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MohammadMehrabani\\ConditionalCoupon\\ConditionalCouponServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "format": "vendor/bin/pint"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+*.md diff=markdown
+*.php diff=php
+
+# Ignore all test and documentation with "export-ignore".
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/.editorconfig      export-ignore
+CONTRIBUTING.md     export-ignore
