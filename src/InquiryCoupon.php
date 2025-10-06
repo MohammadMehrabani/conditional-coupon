@@ -3,7 +3,7 @@
 namespace MohammadMehrabani\ConditionalCoupon;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Support\Facades\Pipeline;
+use Illuminate\Pipeline\Pipeline;
 use MohammadMehrabani\ConditionalCoupon\Exceptions\UnexpectedException;
 use MohammadMehrabani\ConditionalCoupon\Enums\CouponStatusEnum;
 use MohammadMehrabani\ConditionalCoupon\Exceptions\CouponException;
@@ -59,7 +59,7 @@ class InquiryCoupon
             ]);
         }
 
-        Pipeline::through($conditionsPipeline)->thenReturn();
+        app(Pipeline::class)->through($conditionsPipeline)->thenReturn();
 
         [$currency, $discount_amount, $payable_amount] = $this->calculatedPayableAmount($coupon, $amount);
 
