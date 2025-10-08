@@ -2,9 +2,9 @@
 
 namespace MohammadMehrabani\ConditionalCoupon;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\ServiceProvider;
 
 class ConditionalCouponServiceProvider extends ServiceProvider
 {

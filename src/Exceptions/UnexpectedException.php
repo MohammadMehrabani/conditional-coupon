@@ -2,14 +2,14 @@
 
 namespace MohammadMehrabani\ConditionalCoupon\Exceptions;
 
-use Throwable;
 use Exception;
+use Throwable;
 
 class UnexpectedException extends Exception
 {
     public function __construct($message = 'Unexpected error occurred!', $code = 500, ?Throwable $previous = null)
     {
-        if (!is_null($previous)) {
+        if (! is_null($previous)) {
             report($previous);
         }
 

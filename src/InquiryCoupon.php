@@ -4,9 +4,9 @@ namespace MohammadMehrabani\ConditionalCoupon;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Pipeline\Pipeline;
-use MohammadMehrabani\ConditionalCoupon\Exceptions\UnexpectedException;
 use MohammadMehrabani\ConditionalCoupon\Enums\CouponStatusEnum;
 use MohammadMehrabani\ConditionalCoupon\Exceptions\CouponException;
+use MohammadMehrabani\ConditionalCoupon\Exceptions\UnexpectedException;
 use MohammadMehrabani\ConditionalCoupon\Models\Coupon;
 use MohammadMehrabani\ConditionalCoupon\Models\CouponCondition;
 
@@ -24,7 +24,7 @@ class InquiryCoupon
         $coupon = Coupon::query()->with(['conditions'])
             ->where('code', $code)
             ->where('status', CouponStatusEnum::ACTIVE)
-            ->when($locked, function ($query) use ($locked) {
+            ->when($locked, function ($query) {
                 return $query->lockForUpdate();
             })
             ->first();
@@ -35,14 +35,14 @@ class InquiryCoupon
 
         $conditionsPipeline[] = app()->make(CheckValidCouponCondition::class, [
             'coupon' => $coupon,
-            'amount' => $amount
+            'amount' => $amount,
         ]);
 
         /** @var CouponCondition $condition */
         foreach ($coupon->conditions as $condition) {
 
             if (! class_exists($condition->condition)) {
-                throw UnexpectedException::build('Class '.$condition->condition. ' dose not exists.');
+                throw UnexpectedException::build('Class '.$condition->condition.' dose not exists.');
             }
 
             if (! is_subclass_of($condition->condition, CheckConditionAbstract::class)) {
@@ -55,7 +55,7 @@ class InquiryCoupon
             $conditionsPipeline[] = app()->make($condition->condition, [
                 'coupon' => $coupon,
                 'condition' => $condition,
-                'amount' => $amount
+                'amount' => $amount,
             ]);
         }
 
@@ -63,13 +63,10 @@ class InquiryCoupon
 
         [$currency, $discount_amount, $payable_amount] = $this->calculatedPayableAmount($coupon, $amount);
 
-        return[$currency, $amount, $discount_amount, $payable_amount, $coupon];
+        return [$currency, $amount, $discount_amount, $payable_amount, $coupon];
     }
 
     /**
-     * @param Coupon $coupon
-     * @param int $amount
-     * @return array
      * @throws UnexpectedException
      */
     private function calculatedPayableAmount(Coupon $coupon, int $amount): array
