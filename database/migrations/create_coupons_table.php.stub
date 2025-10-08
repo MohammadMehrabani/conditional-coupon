@@ -45,15 +45,17 @@ return new class extends Migration
             ]);
         });
 
-        // constraint to make sure one of discount_percentage or discount_amount is filled
-        $constraintName = 'coupons_discount_percentage_discount_amount_filled_constraint';
-        DB::statement(
-            "ALTER TABLE coupons
-                ADD CONSTRAINT {$constraintName} CHECK (
-                    ((discount_percentage IS NULL) <> (discount_amount IS NULL)) or
-                    ((discount_percentage IS NOT NULL) and (discount_amount IS NOT NULL))
-            );"
-        );
+        if (DB::getDriverName() !== 'sqlite') {
+            // constraint to make sure one of discount_percentage or discount_amount is filled
+            $constraintName = 'coupons_discount_percentage_discount_amount_filled_constraint';
+            DB::statement(
+                "ALTER TABLE coupons
+                    ADD CONSTRAINT {$constraintName} CHECK (
+                        ((discount_percentage IS NULL) <> (discount_amount IS NULL)) or
+                        ((discount_percentage IS NOT NULL) and (discount_amount IS NOT NULL))
+                );"
+            );
+        }
 
         Schema::create('coupon_conditions', function (Blueprint $table) {
             $table->id();

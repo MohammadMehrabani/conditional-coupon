@@ -34,11 +34,19 @@
         "illuminate/database": "^9.0||^10.0||^11.0||^12.0"
     },
     "require-dev": {
+        "orchestra/testbench": "^7.0||^8.0||^9.0||^10.0",
+        "phpunit/phpunit": "^9.5.10||^10.1||^11.0.1||^11.5.3",
         "laravel/pint": "^1.24"
     },
     "autoload": {
         "psr-4": {
-            "MohammadMehrabani\\ConditionalCoupon\\": "src"
+            "MohammadMehrabani\\ConditionalCoupon\\": "src",
+            "MohammadMehrabani\\ConditionalCoupon\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MohammadMehrabani\\ConditionalCoupon\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -49,6 +57,7 @@
         }
     },
     "scripts": {
+        "test": "vendor/bin/phpunit",
         "format": "vendor/bin/pint"
     },
     "minimum-stability": "dev",

@@ -96,6 +96,18 @@ return [
 
 Implementing the CRUD for discount coupons—and adding conditions if needed—is up to you. Once created, you can simply use the discount coupon feature for your orders as shown in the example below.
 
+### Listing Available Check Classes
+
+You can retrieve all available Check classes using the `GetCustomConditions` class.
+Each Check class has a `title` property which is wrapped in `__()` for translation.
+This list can be used to populate the select box when creating discount coupons.
+
+```php
+use MohammadMehrabani\ConditionalCoupon\GetCustomConditions;
+
+GetCustomConditions::handle();
+```
+
 ### create coupon with conditions
 
 ```php
@@ -104,7 +116,7 @@ use MohammadMehrabani\ConditionalCoupon\Models\CouponCondition;
 
 $coupon = Coupon::create([
     'code' => 'AMZ100',
-    // other fill columns
+    // fill other columns
 ]);
 
 $couponCondition = CouponCondition::create([
@@ -192,6 +204,12 @@ The package supports two types of discount fields:
 Calculation:
 - 20% of $200 = $40
 - Since $40 (percentage) > $30 (amount), the final discount will be **$30**.
+
+## Testing
+
+```bash
+composer test
+```
 
 ## Contributing
 

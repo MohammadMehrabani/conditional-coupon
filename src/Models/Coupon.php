@@ -2,15 +2,18 @@
 
 namespace MohammadMehrabani\ConditionalCoupon\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use MohammadMehrabani\ConditionalCoupon\Database\Factories\CouponFactory;
 use MohammadMehrabani\ConditionalCoupon\Enums\CouponStatusEnum;
 use MohammadMehrabani\ConditionalCoupon\Enums\CurrencyEnum;
 
 class Coupon extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -33,6 +36,11 @@ class Coupon extends Model
         'currency' => CurrencyEnum::class,
         'status' => CouponStatusEnum::class,
     ];
+
+    protected static function newFactory(): Factory
+    {
+        return CouponFactory::new();
+    }
 
     public function conditions(): HasMany
     {
